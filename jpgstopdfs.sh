@@ -1,8 +1,8 @@
 #!/bin/bash
 outname=$1
-if [ ! -z $outname ]
+if [ ! -z "$outname" ]
 then
-    outfile="`basename $outname .pdf`.pdf"
+    outfile="`basename "$outname" .pdf`.pdf"
 else
     outfile="Scan `date +"%Y-%m-%d %R"`.pdf"
 fi

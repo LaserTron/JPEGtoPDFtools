@@ -1,13 +1,15 @@
 #!/bin/bash
 
-filename=$1
+file="$1"
+filename="`basename "$1"`"
+echo "Polishing $filename"
 dt="`date +"%Y-%m-%d %R"`"
 mkdir "./archive/$dt"
-cp $filename "./archive/$dt"
-mv $filename "./workbox"
+cp "$file" "./archive/$dt"
+mv "$file" "./workbox"
 cd workbox
 echo "Bursting .pdf"
-pdftk $filename burst
+pdftk "$filename" burst
 echo "Polishing pages..."
 echo "Converting to .jpg"
 for i in pg*.pdf
@@ -21,14 +23,9 @@ do
     echo "Polishing $i ..."
     mogrify -density 300 -normalize -level 10%,90% $i
 done
-rm $filename
-#echo "Concatenating pages"
-#pdftk pg*.pdf cat output $filename
-#cd ..
-#mv "./workbox/$filename" "./outbox"
+rm "$filename"
 echo "Rebuilding pdf"
 cd ..
 mv ./workbox/*.jpg ./inbox
-#echo "Cleaning up"
 rm ./workbox/*
-sh jpgstopdfs.sh $filename
+sh jpgstopdfs.sh "$filename"
