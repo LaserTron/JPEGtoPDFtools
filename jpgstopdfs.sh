@@ -20,9 +20,10 @@ done
 
 echo "concatenating... "
 pdftk ./workbox/* cat output ./workbox/output.pdf
-echo "inflating and deflating..."
-pdf2ps ./workbox/output.pdf ./workbox/output.ps
-ps2pdf ./workbox/output.ps ./workbox/output.pdf
+#This move is debatable
+#echo "inflating and deflating..."
+#pdf2ps ./workbox/output.pdf ./workbox/output.ps
+#ps2pdf ./workbox/output.ps ./workbox/output.pdf
 mv ./workbox/output.pdf ./outbox/"$outfile"
 echo "cleaning up"
 rm ./workbox/*
