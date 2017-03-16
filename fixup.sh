@@ -1,14 +1,22 @@
+#!/bin/bash
 infile=$1
 outfile="`basename $infile .pdf`-fixed"
-cp "$infile" ./workbox/pdftmp.pdf
+
+dt="`date +"%Y-%m-%d %H:%M:%S"`"
+mkdir "./archive/$dt"
+echo "Archiving $infile to:"
+echo "archive/$dt"
+cp "$infile" "./archive/$dt"
+
+mv "$infile" ./workbox/pdftmp.pdf
 cd workbox
 echo "Bursting pdf to ppm"
 pdfimages pdftmp.pdf tmp
-for i in tmp*
-do
-    echo "Polishing $i"
-    mogrify -normalize -level 10%,90% "$i"
-done
+# for i in tmp*
+# do
+#     echo "Polishing $i"
+#     mogrify -normalize -level 10%,90% "$i"
+# done
 for i in tmp*
 do
     echo "Unpaperizing $i"
