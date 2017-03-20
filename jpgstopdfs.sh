@@ -9,21 +9,21 @@ fi
 
 echo "Saving to $outfile"
 
-#dateTime="Scan `date +"%Y-%m-%d %R"`"
+#archive time
+dt="`date +"%Y-%m-%d %H:%M:%S"`"
 
-for i in ./inbox/*
+for i in ./imgtopdf/*
 do
     extn="$i"|awk -F . '{print $NF}'
-    convert $i -density 300 "./workbox/`basename $i .$extn`.pdf"
+    convert "$i" -density 300 "./workbox/`basename $i .$extn`.pdf"
     echo "$i converted to pdf"
 done
 
 echo "concatenating... "
 pdftk ./workbox/* cat output ./workbox/output.pdf
-echo "inflating and deflating..."
-pdf2ps ./workbox/output.pdf ./workbox/output.ps
-ps2pdf ./workbox/output.ps ./workbox/output.pdf
 mv ./workbox/output.pdf ./outbox/"$outfile"
-echo "cleaning up"
+echo "cleaning up and archiving source files"
 rm ./workbox/*
+mkdir -v "./archive/$dt"
+mv -v ./imgtopdf/* "./archive/$dt"
 echo "$outfile produced."

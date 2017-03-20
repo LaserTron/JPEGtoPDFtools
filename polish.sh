@@ -3,29 +3,33 @@
 file="$1"
 filename="`basename "$1"`"
 echo "Polishing $filename"
-dt="`date +"%Y-%m-%d %R"`"
+dt="`date +"%Y-%m-%d %H:%M:%S"`"
 mkdir "./archive/$dt"
+echo "Archiving $file to:"
+echo "archive/$dt"
 cp "$file" "./archive/$dt"
 mv "$file" "./workbox"
 cd workbox
 echo "Bursting .pdf"
 pdftk "$filename" burst
-echo "Polishing pages..."
 echo "Converting to .jpg"
 for i in pg*.pdf
 do
     echo "Converting $i"
-    convert -density 300 $i -quality 80 `basename $i .pdf`.jpg
+    convert -density 300 $i -quality 90 `basename $i .pdf`.jpg
 done
-echo "Polishing"
+
 for i in pg*.jpg
 do
-    echo "Polishing $i ..."
-    mogrify -density 300 -normalize -level 10%,90% $i
+    echo "Filling black borders and polishing $i ..."
+    mogrify -density 300 -normalize -level 15%,85% $i
+    mogrify -border 8 -bordercolor black $i
+    mogrify -fuzz 20% -fill white -floodfill +0+0 black $i
+    mogrify -shave 8 $i
 done
 rm "$filename"
 echo "Rebuilding pdf"
 cd ..
-mv ./workbox/*.jpg ./inbox
+mv ./workbox/*.jpg ./imgtopdf
 rm ./workbox/*
 sh jpgstopdfs.sh "$filename"
