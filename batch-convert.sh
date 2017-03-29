@@ -2,7 +2,7 @@
 
 for i in ./batch/*
 do
-    doc=`basename $i`
+    doc=`basename "$i"`
     echo "Creating $doc..."
     echo "consuming directory"
     mv "$i"/* ./imgtopdf/
