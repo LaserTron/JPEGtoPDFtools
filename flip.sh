@@ -1,4 +1,8 @@
 #!/bin/bash
 filename=$1
-pdftk "$filename" cat 1-endsouth output ./workbox/bob.pdf
-mv ./workbox/bob.pdf "$filename"
+curdir=`pwd`
+tmpdir=`mktemp -d`
+tmpfile="$tmpdir/$filename"
+pdftk "$filename" cat 1-endsouth output "$tmpfile"
+mv "$tmpfile" "$curdir/$filename"
+rm -R "$tmpdir"
