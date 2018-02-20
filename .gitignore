@@ -87,3 +87,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+#Stuff made by program:
+archive
+*.jpg
+*.jpeg
+*~
+*.pdf
